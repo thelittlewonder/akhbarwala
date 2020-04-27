@@ -1,0 +1,19 @@
+{
+  "name": "newspaper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cron": "^1.8.2",
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "images-to-pdf": "^1.0.3",
+    "request": "^2.88.2",
+    "twilio": "^3.42.2"
+  }
+}

@@ -47,6 +47,10 @@ var port = process.env.PORT || 8080
 var part1 = fs.readFileSync('./epaper-part1.pdf')
 var part2 = fs.readFileSync('./epaper-part2.pdf')
 
+app.get("/", (req, res, next) => {
+    res.send("Jaaga hu bhai")
+});
+
 app.get("/part1", (req, res, next) => {
     res.contentType("application/pdf")
     res.send(part1)
@@ -103,7 +107,7 @@ let sendToWhatsapp = function () {
 
 var CronJob = require('cron').CronJob;
 var job = new CronJob(
-	'59 59 19 * * *',
+	'59 30 05 * * *',
 	function() {
         downloadPaper()
         getPart1()

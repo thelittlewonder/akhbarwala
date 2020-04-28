@@ -27,42 +27,19 @@ let downloadPaper = function () {
         urlList.push(localRoute)
     }
     otherHalf = urlList.splice(5, 10);
+    console.log('Downloaded Images')
 }
 
 //convert to PDF
-let getPart1 = async function() {
+let getPart1 = async function () {
     await imagesToPdf(urlList, "./epaper-part1.pdf")
+    console.log('Converted Part 1')
 }
 
-let getPart2 = async function() {
+let getPart2 = async function () {
     await imagesToPdf(otherHalf, "./epaper-part2.pdf")
+    console.log('Converted Part 2')
 }
-
-// start the server
-
-var express = require('express')
-var app = express()
-var port = process.env.PORT || 8080
-
-var part1 = fs.readFileSync('./epaper-part1.pdf')
-var part2 = fs.readFileSync('./epaper-part2.pdf')
-
-app.get("/", (req, res, next) => {
-    res.send("Jaaga hu bhai")
-});
-
-app.get("/part1", (req, res, next) => {
-    res.contentType("application/pdf")
-    res.send(part1)
-});
-
-app.get("/part2", (req, res, next) => {
-    res.contentType("application/pdf")
-    res.send(part2)
-});
-
-app.listen(port)
-console.log('Magic happens on port ' + port)
 
 // send the message
 
@@ -103,19 +80,36 @@ let sendToWhatsapp = function () {
         .then(message => console.log(message.sid))
 }
 
-//schedule delivery
+// start the server
 
-var CronJob = require('cron').CronJob;
-var job = new CronJob(
-	'59 30 05 * * *',
-	function() {
-        downloadPaper()
-        getPart1()
-        getPart2()
-        sendToWhatsapp()
-	},
-	null,
-	true,
-	'Asia/Kolkata'
-);
-job.start();
+var express = require('express')
+var app = express()
+var port = process.env.PORT || 8080
+
+var part1 = fs.readFileSync('./epaper-part1.pdf')
+var part2 = fs.readFileSync('./epaper-part2.pdf')
+
+app.get("/", (req, res, next) => {
+    res.send("Jaaga hu bhai")
+});
+
+app.get("/part1", (req, res, next) => {
+    res.contentType("application/pdf")
+    res.send(part1)
+});
+
+app.get("/part2", (req, res, next) => {
+    res.contentType("application/pdf")
+    res.send(part2)
+});
+
+app.get("/send", (req, res, next) => {
+    downloadPaper()
+    getPart1()
+    getPart2()
+    sendToWhatsapp()
+    res.send('Paper sent')
+})
+
+app.listen(port)
+console.log('Magic happens on port ' + port)

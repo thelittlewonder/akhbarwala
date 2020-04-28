@@ -50,9 +50,9 @@ const client = require('twilio')(accountSid, authToken);
 let date = new Date();
 date = date.toLocaleDateString();
 let fileName = 'Amar-Ujala-' + date;
-let toNumber = process.env.TO_NUMBER
 
-let sendToWhatsapp = function () {
+let sendToWhatsapp = function (phone) {
+    let toNumber = 'whatsapp:+91' + phone
     client.messages
         .create({
             from: 'whatsapp:+14155238886',
@@ -107,7 +107,7 @@ app.get("/send", (req, res, next) => {
     downloadPaper()
     getPart1()
     getPart2()
-    sendToWhatsapp()
+    sendToWhatsapp(req.query.ph)
     res.send('Paper sent')
 })
 

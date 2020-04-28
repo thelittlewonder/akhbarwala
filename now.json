@@ -3,5 +3,21 @@
     "builds": [{
         "src": "index.js",
         "use": "@now/node-server"
-    }]
+    }],
+    "routes": [{
+            "src": "/part1",
+            "dest": "/index.js",
+            "methods": ["GET"]
+        },
+        {
+            "src": "/part2",
+            "dest": "/index.js",
+            "methods": ["GET"]
+        },
+        {
+            "src": "/",
+            "dest": "/index.js",
+            "methods": ["GET"]
+        }
+    ]
 }

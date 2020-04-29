@@ -46,10 +46,11 @@ let getPart2 = async function () {
 
 // send the message
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
-const client = require('twilio')(accountSid, authToken);
-
+const accountSid = process.env.TWILIO_ACCOUNT_SID
+const authToken = process.env.TWILIO_AUTH_TOKEN
+const client = require('twilio')(accountSid, authToken)
+const apiUrl = process.env.API_URL
+//apiUrl is the url where you run to host this index.js file. Eg Heroku, Now, Repl.it
 
 let sendToWhatsapp = function (phone) {
     let date = new Date();
@@ -70,7 +71,7 @@ let sendToWhatsapp = function (phone) {
             from: 'whatsapp:+14155238886',
             body: fileName + '-part-1',
             to: toNumber,
-            mediaUrl: 'https://epaper--abhisheksharm22.repl.co/part1'
+            mediaUrl: apiUrl+ '/part1'
         })
         .then(message => console.log(message.sid))
 
@@ -80,7 +81,7 @@ let sendToWhatsapp = function (phone) {
                 from: 'whatsapp:+14155238886',
                 body: fileName + '-part-2',
                 to: toNumber,
-                mediaUrl: 'https://epaper--abhisheksharm22.repl.co/part2'
+                mediaUrl: apiUrl+ '/part2'
             })
             .then(message => console.log(message.sid))
     }, 5000)

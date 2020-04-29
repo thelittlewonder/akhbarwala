@@ -9,15 +9,18 @@ var download = function (uri, filename, callback) {
     })
 }
 
-//parameters
-let today = new Date()
-let month = ('0' + (today.getMonth() + 1)).slice(-2)
-let day = ('0' + today.getDate()).slice(-2)
-let urlList = []
-let otherHalf
+var urlList
+var otherHalf
 
 //download images
 let downloadPaper = function () {
+    //parameters
+    let today = new Date()
+    let month = ('0' + (today.getMonth() + 1)).slice(-2)
+    let day = ('0' + today.getDate()).slice(-2)
+    urlList = []
+    otherHalf = []
+
     for (let i = 1; i < 11; i++) {
         let urlRoute = 'https://epaperwmimg.amarujala.com/2020/' + month + '/' + day + '/dl/' + ('0' + i).slice(-2) + '/hdimage.jpg'
         let localRoute = './temp/' + i + '.png'
@@ -47,11 +50,12 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = require('twilio')(accountSid, authToken);
 
-let date = new Date();
-date = date.toLocaleDateString();
-let fileName = 'Amar-Ujala-' + date;
 
 let sendToWhatsapp = function (phone) {
+    let date = new Date();
+    date = date.toLocaleDateString();
+    let fileName = 'Amar-Ujala-' + date;
+
     let toNumber = 'whatsapp:+91' + phone
     client.messages
         .create({
@@ -70,14 +74,16 @@ let sendToWhatsapp = function (phone) {
         })
         .then(message => console.log(message.sid))
 
-    client.messages
-        .create({
-            from: 'whatsapp:+14155238886',
-            body: fileName + '-part-2',
-            to: toNumber,
-            mediaUrl: 'https://epaper--abhisheksharm22.repl.co/part2'
-        })
-        .then(message => console.log(message.sid))
+    setTimeout(function () {
+        client.messages
+            .create({
+                from: 'whatsapp:+14155238886',
+                body: fileName + '-part-2',
+                to: toNumber,
+                mediaUrl: 'https://epaper--abhisheksharm22.repl.co/part2'
+            })
+            .then(message => console.log(message.sid))
+    }, 5000)
 }
 
 // start the server
@@ -107,7 +113,9 @@ app.get("/send", (req, res, next) => {
     downloadPaper()
     getPart1()
     getPart2()
-    sendToWhatsapp(req.query.ph)
+    setTimeout(function () {
+        sendToWhatsapp(req.query.ph)
+    }, 5000);
     res.send('Paper sent')
 })
 

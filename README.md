@@ -1,5 +1,5 @@
-# akhbarwala
-Whatsapp Bot to send newspaper every mornign
+# Akbarwala 🗞
+Whatsapp Bot to send newspaper every morning
 
 ## Setting up
 To set up your own version of this Whatsapp bot

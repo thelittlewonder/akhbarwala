@@ -92,20 +92,21 @@ let sendToWhatsapp = function (phone) {
 var express = require('express')
 var app = express()
 var port = process.env.PORT || 8080
-
-var part1 = fs.readFileSync('./epaper-part1.pdf')
-var part2 = fs.readFileSync('./epaper-part2.pdf')
+var part1
+var part2
 
 app.get("/", (req, res, next) => {
     res.send("Jaaga hu bhai")
 });
 
 app.get("/part1", (req, res, next) => {
+    part1 = fs.readFileSync('./epaper-part1.pdf')
     res.contentType("application/pdf")
     res.send(part1)
 });
 
 app.get("/part2", (req, res, next) => {
+    part2 = fs.readFileSync('./epaper-part2.pdf')
     res.contentType("application/pdf")
     res.send(part2)
 });

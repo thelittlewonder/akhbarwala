@@ -48,10 +48,10 @@ let getPart2 = async function () {
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID
 const authToken = process.env.TWILIO_AUTH_TOKEN
-const client = require('twilio')(accountSid, authToken)
-const apiUrl = process.env.API_URL
-//apiUrl is the url where you run to host this index.js file. Eg Heroku, Now, Repl.it
+const apiUrl = process.env.API_URL //apiUrl is the url where you run to host this index.js file. Eg Heroku, Now, Repl.it
+const phoneNumber = process.env.SANDBOX_NUMBER //sandbox number is the whatsapp number which send you message starts : +xxxxxxxxxxx
 
+const client = require('twilio')(accountSid, authToken)
 let sendToWhatsapp = function (phone) {
     let date = new Date();
     date = date.toLocaleDateString();
@@ -60,7 +60,7 @@ let sendToWhatsapp = function (phone) {
     let toNumber = 'whatsapp:+91' + phone
     client.messages
         .create({
-            from: 'whatsapp:+14155238886',
+            from: 'whatsapp:'+phoneNumber,
             body: "Good Morning! Here is today's newspaper 📰",
             to: toNumber
         })
@@ -68,7 +68,7 @@ let sendToWhatsapp = function (phone) {
 
     client.messages
         .create({
-            from: 'whatsapp:+14155238886',
+            from: 'whatsapp:'+phoneNumber,
             body: fileName + '-part-1',
             to: toNumber,
             mediaUrl: apiUrl+ '/part1'
@@ -78,7 +78,7 @@ let sendToWhatsapp = function (phone) {
     setTimeout(function () {
         client.messages
             .create({
-                from: 'whatsapp:+14155238886',
+                from: 'whatsapp:'+phoneNumber,
                 body: fileName + '-part-2',
                 to: toNumber,
                 mediaUrl: apiUrl+ '/part2'

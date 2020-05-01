@@ -117,6 +117,7 @@ app.get("/update", (req, res, next) => {
     downloadPaper()
     getPart1()
     getPart2()
+    res.send("Updated the paper")
 })
 
 app.get("/send", (req, res, next) => {

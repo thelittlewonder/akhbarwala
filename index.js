@@ -22,7 +22,7 @@ let downloadPaper = function () {
     otherHalf = []
 
     for (let i = 1; i < 11; i++) {
-        let urlRoute = 'https://epaperwmimg.amarujala.com/2020/' + month + '/' + day + '/dl/' + ('0' + i).slice(-2) + '/hdimage.jpg'
+        let urlRoute = 'https://epaperwmimg.amarujala.com/2020/' + month + '/' + day + '/jl/' + ('0' + i).slice(-2) + '/hdimage.jpg'
         let localRoute = './temp/' + i + '.png'
         download(urlRoute, localRoute, function () {
             //console.log('Page ' + i +' saved.')
@@ -48,6 +48,7 @@ let getPart2 = async function () {
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
+const sandboxNumber = process.env.SANDBOX_NUMBER;
 const client = require('twilio')(accountSid, authToken);
 
 let sendToWhatsapp = function (phone) {
@@ -58,7 +59,7 @@ let sendToWhatsapp = function (phone) {
     let toNumber = 'whatsapp:+91' + phone
     client.messages
         .create({
-            from: 'whatsapp:+14155238886',
+            from: 'whatsapp:'+sandboxNumber,
             body: "Hello there! Here is your today's newspaper 📰",
             to: toNumber
         })
@@ -66,7 +67,7 @@ let sendToWhatsapp = function (phone) {
 
     client.messages
         .create({
-            from: 'whatsapp:+14155238886',
+            from: 'whatsapp:'+sandboxNumber,
             body: fileName + '-part-1',
             to: toNumber,
             mediaUrl: 'https://epaper--abhisheksharm22.repl.co/part1'
@@ -76,7 +77,7 @@ let sendToWhatsapp = function (phone) {
     setTimeout(function () {
         client.messages
             .create({
-                from: 'whatsapp:+14155238886',
+                from: 'whatsapp:'+sandboxNumber,
                 body: fileName + '-part-2',
                 to: toNumber,
                 mediaUrl: 'https://epaper--abhisheksharm22.repl.co/part2'

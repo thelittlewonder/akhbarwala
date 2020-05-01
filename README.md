@@ -1,5 +1,6 @@
 # Akbarwala 🗞
 Whatsapp Bot to send newspaper every morning
+![preview](https://i.imgur.com/iNqnDVK.png)
 
 ## Setting up
 To set up your own version of this Whatsapp bot

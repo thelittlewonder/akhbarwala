@@ -82,7 +82,7 @@ let sendToWhatsapp = function (phone) {
                 mediaUrl: 'https://epaper--abhisheksharm22.repl.co/part2'
             })
             .then(message => console.log(message.status))
-    }, 2000)
+    }, 5000)
 }
 
 // start the server

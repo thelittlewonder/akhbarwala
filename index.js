@@ -1,6 +1,7 @@
 var imagesToPdf = require("images-to-pdf")
 var fs = require('fs')
 var request = require('request')
+var bodyParser = require('body-parser')
 
 // function to download image
 var download = function (uri, filename, callback) {
@@ -11,7 +12,6 @@ var download = function (uri, filename, callback) {
 
 var urlList
 var otherHalf
-
 //download images
 let downloadPaper = function () {
     //parameters
@@ -46,12 +46,10 @@ let getPart2 = async function () {
 
 // send the message
 
-const accountSid = process.env.TWILIO_ACCOUNT_SID
-const authToken = process.env.TWILIO_AUTH_TOKEN
-const apiUrl = process.env.API_URL //apiUrl is the url where you run to host this index.js file. Eg Heroku, Now, Repl.it
-const phoneNumber = process.env.SANDBOX_NUMBER //sandbox number is the whatsapp number which send you message starts : +xxxxxxxxxxx
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const client = require('twilio')(accountSid, authToken);
 
-const client = require('twilio')(accountSid, authToken)
 let sendToWhatsapp = function (phone) {
     let date = new Date();
     date = date.toLocaleDateString();
@@ -60,40 +58,44 @@ let sendToWhatsapp = function (phone) {
     let toNumber = 'whatsapp:+91' + phone
     client.messages
         .create({
-            from: 'whatsapp:'+phoneNumber,
-            body: "Good Morning! Here is today's newspaper 📰",
+            from: 'whatsapp:+14155238886',
+            body: "Hello there! Here is your today's newspaper 📰",
             to: toNumber
         })
-        .then(message => console.log(message.sid))
+        .then(message => console.log(message.status))
 
     client.messages
         .create({
-            from: 'whatsapp:'+phoneNumber,
+            from: 'whatsapp:+14155238886',
             body: fileName + '-part-1',
             to: toNumber,
-            mediaUrl: apiUrl+ '/part1'
+            mediaUrl: 'https://epaper--abhisheksharm22.repl.co/part1'
         })
-        .then(message => console.log(message.sid))
+        .then(message => console.log(message.status))
 
     setTimeout(function () {
         client.messages
             .create({
-                from: 'whatsapp:'+phoneNumber,
+                from: 'whatsapp:+14155238886',
                 body: fileName + '-part-2',
                 to: toNumber,
-                mediaUrl: apiUrl+ '/part2'
+                mediaUrl: 'https://epaper--abhisheksharm22.repl.co/part2'
             })
-            .then(message => console.log(message.sid))
-    }, 5000)
+            .then(message => console.log(message.status))
+    }, 2000)
 }
 
 // start the server
 
 var express = require('express')
 var app = express()
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 var port = process.env.PORT || 8080
-var part1
-var part2
+var part1 //first half of paper
+var part2 //second half of paper
 
 app.get("/", (req, res, next) => {
     res.send("Jaaga hu bhai")
@@ -111,15 +113,43 @@ app.get("/part2", (req, res, next) => {
     res.send(part2)
 });
 
-app.get("/send", (req, res, next) => {
+app.get("/update", (req, res, next) => {
     downloadPaper()
     getPart1()
     getPart2()
-    setTimeout(function () {
-        sendToWhatsapp(req.query.ph)
-    }, 5000);
+})
+
+app.get("/send", (req, res, next) => {
+    let args = req.query.ph.split(',')
+    console.log(args)
+    for (let i = 0; i < args.length; i++) {
+        sendToWhatsapp(args[i])
+    }
     res.send('Paper sent')
 })
+
+//handle incoming messages
+const MessagingResponse = require('twilio').twiml.MessagingResponse;
+
+app.post('/incoming', (req, res) => {
+
+    const twiml = new MessagingResponse();
+
+    if (req.body.Body.toLowerCase() == 'paper') {
+        let toNumber = req.body.From.substring(12)
+        sendToWhatsapp(toNumber)
+    } else {
+        var msg = twiml.message(`Hello Hello 👋
+
+I am Akhbarwala 🤓🗞 I will send you the latest newspaper, right within WhatsApp.
+
+To receive the newspaper - reply with *Paper*`)
+        res.writeHead(200, {
+            'Content-Type': 'text/xml'
+        });
+        res.end(twiml.toString());
+    }
+});
 
 app.listen(port)
 console.log('Magic happens on port ' + port)

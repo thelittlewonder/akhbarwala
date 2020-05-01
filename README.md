@@ -1,5 +1,4 @@
 # Akbarwala 🗞
-Whatsapp Bot to receive the daily newspaper.
 ![preview](https://i.imgur.com/iNqnDVK.png)
 
 ## Setting up

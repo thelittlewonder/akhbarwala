@@ -15,6 +15,8 @@ TWILIO_ACCOUNT_SID = Your account SSID (obtained from Twilio)
 
 TWILIO_AUTH_TOKEN = Twilio Authorisation Token (obtained from Twilio)
 
+SANDBOX_NUMBER = The twilio number with which you interact (obtained from Twilio
+
 API_URL = The base url where this node project is hosted (eg. akbharwala.herokuapp.com)
 
 ```
